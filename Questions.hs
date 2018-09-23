@@ -1,9 +1,12 @@
 -- https://wiki.haskell.org/99_questions/1_to_10
 module Questions where
+    import Data.List 
 
     numeros = [1,2,3,4]
     pol = [1,2,3,4,3,2,1]
     letras = ["a","e","i","o","u"]
+    pak = ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']
+    eenc = ["aaaa","b","cc","aa","d","eeee"]
 
     -- Problem 1
     myLast :: [a] -> a
@@ -38,11 +41,33 @@ module Questions where
     myReverse (x:xs) = myReverse xs ++ [x]
 
     -- Problem 6
-    -- isPalindrome :: [a] -> Bool
+    isPalindrome :: (Eq a) => [a] -> Bool
     isPalindrome [] = False
     isPalindrome [x] = True
     isPalindrome (x:y:[]) = False
     isPalindrome (x:xs) | last xs == x = isPalindrome (init xs)
                         | otherwise = False
-    -- isPalindrome (x:xs) = if last xs == x then True
+    -- isPalindrome (x:xs) = if last xs == x then isPalindrome (init xs)
     --                       else False
+
+    -- Problem 7
+    data NestedList a = Elem a | List [NestedList a] deriving Show
+    flatten :: NestedList a -> [a]
+    flatten (Elem x) = [x]
+    flatten (List []) = []
+    flatten (List (x:xs)) = flatten x ++ flatten (List xs)
+
+    -- Problem 8 
+    
+    -- Problem 9
+    -- >> group pak
+    -- pack :: (Eq a) => [a] -> [a]
+    -- pack [] = []
+    -- pack (x:xs) = (x:(filter (==x) xs)):(pack $ filter (/=x) xs)
+    -- pack (x:xs) | head xs == x = [x] ++ [] ++ pack xs
+    --             | otherwise = [x] : pack xs
+
+    -- Problem 10 
+    -- encode :: [a] -> [(Int,a)] -- [(Int,a)]
+    encode [] = []
+    encode (x:xs) = [(length x, head x)] ++ encode xs 
