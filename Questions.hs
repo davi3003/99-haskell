@@ -8,11 +8,18 @@ module Questions where
     pak = ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']
     eenc = ["aaaa","b","cc","aa","d","eeee"]
     eencM = "aaaabccaadeeee"
+    dec = [Multiple 4 'a',Single 'b',Multiple 2 'c',Multiple 2 'a',Single 'd',Multiple 4 'e']
 
 
     -- Problem 11
-    data encData a = Single Char | Multiple Int Char 
-
+    data EncData a = Single a | Multiple Int a deriving Show
+    -- encodeModified :: Eq a => [a] -> [EncData a] -- > Not found
     encodeModified [] = []
-    encodeModified (x:xs) = [Multiple (length x) (head x)] ++ encodeModified xs 
-                        --   | otherwise = [Single head x] ++ encodeModified xs 
+    encodeModified (x:xs) | length x > 1 = [Multiple (length x) (head x)] ++ encodeModified xs 
+                          | otherwise = [Single (head x)] ++ encodeModified xs 
+
+    -- Problem 12
+    -- decodeModified ((Multiple y x):xs) = [(replicate y x)] ++ decodeModified xs
+    decodeModified [] = []
+    decodeModified ((Multiple y x):xs) = [x] ++ decodeModified xs
+    decodeModified ((Single x):xs) = [x] ++ decodeModified xs
