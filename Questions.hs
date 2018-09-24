@@ -19,7 +19,14 @@ module Questions where
                           | otherwise = [Single (head x)] ++ encodeModified xs 
 
     -- Problem 12
-    -- decodeModified ((Multiple y x):xs) = [(replicate y x)] ++ decodeModified xs
-    decodeModified [] = []
-    decodeModified ((Multiple y x):xs) = [x] ++ decodeModified xs
-    decodeModified ((Single x):xs) = [x] ++ decodeModified xs
+    toTuple :: EncData a -> (Int, a)
+    toTuple (Single x)     = (1, x)
+    toTuple (Multiple n x) = (n, x)
+
+    decodeModified :: [EncData a] -> [a]
+    decodeModified = concatMap (uncurry replicate . toTuple)
+    -- decodeModified ((Multiple y x):xs) = [concat(replicate y x)] ++ decodeModified xs
+    -- decodeModified ((Single x):xs) = [x] ++ decodeModified xs
+
+    -- Problem 13
+        
